@@ -17,22 +17,13 @@ document
 
     if (result.success) {
       sessionStorage.setItem("authenticated", "true");
-      window.location.href = "/index.html";
+      window.location.href = "/index.html"; // Redirect to the main page
     } else {
       document.getElementById("loginError").innerText = result.message;
     }
   });
 
-// Check authentication on index page
-if (
-  window.location.pathname === "/index.html" &&
-  sessionStorage.getItem("authenticated") !== "true"
-) {
-  alert("Please log in first.");
-  window.location.href = "/";
-}
-
-// File upload functionality
+// Upload file
 document
   .getElementById("uploadForm")
   ?.addEventListener("submit", async function (event) {
@@ -50,13 +41,18 @@ document
     const response = await fetch("/upload", {
       method: "POST",
       body: formData,
-      headers: { Authorization: "authenticated" },
     });
-    const result = await response.text();
-    alert(result);
+
+    // Check the response for success or failure
+    const result = await response.json();
+    if (result.success) {
+      alert(`File uploaded successfully: ${result.filename}`);
+    } else {
+      alert(`File upload failed: ${result.message}`);
+    }
   });
 
-// File download functionality
+// Download file
 async function downloadFile() {
   if (sessionStorage.getItem("authenticated") !== "true") {
     alert("Unauthorized. Please login.");
@@ -65,5 +61,15 @@ async function downloadFile() {
   }
 
   const filename = document.getElementById("filename").value;
-  window.location.href = `/download/${filename}`;
+  const response = await fetch(`/download/${filename}`, {
+    method: "GET",
+  });
+
+  if (response.ok) {
+    // Initiate file download
+    window.location.href = `/download/${filename}`;
+  } else {
+    const errorText = await response.json(); // Get JSON response
+    alert(`Download failed: ${errorText.message}`);
+  }
 }
