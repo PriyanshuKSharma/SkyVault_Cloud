@@ -6,6 +6,7 @@ body {
   height: 100vh;
   background-color: #f4f6f9;
   color: #333;
+  margin: 0; /* Remove default body margin */
 }
 
 .container {
@@ -30,6 +31,13 @@ button {
   border-radius: 5px;
   border: 1px solid #d1d5db;
   font-size: 1em;
+  width: calc(100% - 30px); /* Adjust width to fit padding */
+  transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+input:focus {
+  border-color: #6366f1; /* Change border color on focus */
+  outline: none; /* Remove default outline */
 }
 
 button {
@@ -37,14 +45,35 @@ button {
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Add transform transition */
 }
 
 button:hover {
   background-color: #4f46e5;
+  transform: translateY(-1px); /* Slightly lift button on hover */
+}
+
+button:active {
+  transform: translateY(0); /* Reset button on click */
 }
 
 #loginError {
   color: red;
   margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px; /* Reduce padding on smaller screens */
+  }
+
+  h1 {
+    font-size: 1.5em; /* Adjust heading size */
+  }
+
+  input,
+  button {
+    font-size: 0.9em; /* Slightly smaller font size */
+  }
 }
