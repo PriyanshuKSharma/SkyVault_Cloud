@@ -20,5 +20,11 @@
       </div>
     </div>
     <script src="script.js"></script>
+    <script>
+      // Redirect to login page if the user is not authenticated
+      if (sessionStorage.getItem("authenticated") !== "true") {
+        window.location.href = "/";
+      }
+    </script>
   </body>
 </html>
